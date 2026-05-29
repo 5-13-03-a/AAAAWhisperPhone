@@ -16,9 +16,8 @@
         '.ca-msg-row.other .ca-msg-bubble::before{content:"";position:absolute;left:-6px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:6px solid rgba(0,0,0,0.13);}'+
         '.ca-msg-row.other .ca-msg-bubble::after{content:"";position:absolute;left:-4px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:5px solid rgba(255,255,255,0.75);}'+
         '.ca-msg-row.user .ca-msg-bubble{padding-top:6px;padding-bottom:6px;position:relative;border-radius:12px 12px 2px 12px;}'+
-        '.ca-msg-row.user .ca-msg-bubble::before{content:"";position:absolute;right:-6px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid rgba(0,0,0,0.08);}'+
-        '.ca-msg-row.user .ca-msg-bubble::after{content:"";position:absolute;right:-4px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid #3D3D40;}'+
-        '.ca-msg-row{margin-bottom:5px;}'+
+        '.ca-msg-row.user .ca-msg-bubble::before{content:"";position:absolute;right:-6px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid rgba(0,0,0,0.04);}'+
+        '.ca-msg-row.user .ca-msg-bubble::after{content:"";position:absolute;right:-4px;top:8px;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid #f0f0f1;}'+
         /* 多选删除：气泡右边一个不起眼的小点 */
         '.ca-msg-mdot{display:none;}'+
         '.multi-select-mode .ca-msg-row{position:relative;}'+

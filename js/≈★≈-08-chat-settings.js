@@ -863,7 +863,7 @@ function refreshMemoryLibraryList(memKey, memories){
   } else {
     memories.forEach(function(m, i){
       var levelLabels = ['短期','长期','重要','核心'];
-      var levelColors = ['#cc','#b5c8ab','#c8b5ab','#c8abb5'];
+      var levelColors = ['#ccc','#b5c8ab','#c8b5ab','#c8abb5'];
       var lv = (typeof m.level === 'number') ? m.level : 1;
       listHtml += '<div class="cs-mem-item" data-idx="'+i+'">'+
         '<div class="cs-mem-item-bar" style="background:'+levelColors[lv]+';"></div>'+
