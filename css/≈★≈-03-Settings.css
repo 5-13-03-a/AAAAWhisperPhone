@@ -1,0 +1,423 @@
+/* ============ WhisperPhone Soul (Settings) ============ */
+.soul-panel {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(180,180,188,0.14) 0%, rgba(255,255,255,0) 50%),
+        #FFFFFF;
+    z-index: 500;
+    opacity: 0;
+    transform: scale(1.015);
+    pointer-events: none;
+    transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    color: var(--t-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+}
+.soul-panel.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+.soul-panel .soul-inner {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease 0.08s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
+}
+.soul-panel.active .soul-inner {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.soul-inner {
+    max-width: 430px;
+    margin: 0 auto;
+    padding: calc(env(safe-area-inset-top, 20px) + 18px) 20px calc(env(safe-area-inset-bottom, 20px) + 60px);
+}
+
+/* nav row */
+.soul-panel .nav-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 4px 22px;
+}
+.soul-panel .nav-back,
+.soul-panel .nav-done {
+    font-size: 13px; font-weight: 600;
+    color: var(--t-text-soft);
+    cursor: pointer;
+    user-select: none;
+}
+.soul-panel .nav-back:active,
+.soul-panel .nav-done:active { color: var(--t-text); }
+.soul-panel .nav-title {
+    font-size: 12px; font-weight: 800;
+    letter-spacing: 4px;
+    color: var(--t-text);
+    text-transform: uppercase;
+}
+
+/* profile */
+.soul-panel .profile-block {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 0 32px;
+    position: relative;
+}
+.soul-panel .avatar-big {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background-color: var(--t-light);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--t-line);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+    position: relative;
+    cursor: pointer;
+}
+.soul-panel .avatar-big::after {
+    content: '';
+    position: absolute;
+    right: -4px; bottom: 4px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background-color: var(--t-deep);
+    border: 3px solid #FFFFFF;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 5v14M5 12h14'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+}
+.soul-panel .name-cap {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px 8px 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--t-line);
+    border-radius: 24px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+}
+.soul-panel .name-cap .dot-tag {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--t-deep);
+}
+.soul-panel .name-cap .nick {
+    font-size: 13px; font-weight: 800;
+    color: var(--t-text);
+    letter-spacing: 0.4px;
+    cursor: text;
+    outline: none;
+    padding: 0 2px;
+    border-radius: 4px;-webkit-user-select: text;
+    user-select: text;
+}
+.soul-panel .name-cap .nick:focus { background: rgba(0,0,0,0.04); }
+.soul-panel .name-cap .div-line {
+    width: 1px; height: 12px;
+    background: var(--t-line);
+}
+.soul-panel .name-cap .tag {
+    font-size: 9px; font-weight: 700;
+    color: var(--t-text-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.soul-panel .id-line {
+    margin-top: 10px;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--t-text-soft);
+    text-transform: uppercase;
+}
+
+/* group list */
+.soul-panel .group-label {
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--t-text-soft);
+    text-transform: uppercase;
+    padding: 0 16px 10px;
+    margin-top: 22px;
+}
+.soul-panel .group {
+    background: #FFFFFF;
+    border: 1px solid var(--t-line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.03);
+}
+.soul-panel .row {
+    display: flex; align-items: center;
+    padding: 14px 16px;
+    gap: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid var(--t-line);
+}
+.soul-panel .row:last-child { border-bottom: none; }
+.soul-panel .row:active { background: rgba(0,0,0,0.025); }
+
+.soul-panel .row-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.soul-panel .row-icon.deep   { background: var(--t-deep);  color: #FFFFFF; }
+.soul-panel .row-icon.light  { background: var(--t-light); color: var(--t-text); }
+.soul-panel .row-icon.silver { background: var(--t-accent); color: #FFFFFF; }
+.soul-panel .row-icon.line   { background: #FFFFFF; border: 1px solid var(--t-line); color: var(--t-text); }
+
+.soul-panel .row-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.soul-panel .row-title { font-size: 13px; font-weight: 700; color: var(--t-text); }
+.soul-panel .row-sub   { font-size: 10px; font-weight: 500; color: var(--t-text-soft); letter-spacing: 0.3px; }
+.soul-panel .row-tail  { display: flex; align-items: center; gap: 6px; color: var(--t-mid); }
+.soul-panel .row-tail .val { font-size: 11px; color: var(--t-text-soft); font-weight: 600; }
+
+/* toggles (沿用苹果味) */
+.soul-panel .toggle {
+    width: 38px; height: 22px;
+    border-radius: 22px;
+    background: var(--t-mid);
+    position: relative;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+.soul-panel .toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: transform 0.3s var(--soft-ease);
+}
+.soul-panel .toggle.on { background: var(--t-deep); }
+.soul-panel .toggle.on::after { transform: translateX(16px); }
+
+.soul-panel .footer-sig {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--t-mid);
+    text-transform: uppercase;
+}
+
+/* ========== 弹窗遮罩通用 ========== */
+.wp-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 600;
+    background: rgba(0,0,0,0.2);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+.wp-modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ========== ⑤ WHISPER 壁纸气泡弹窗 ========== */
+.whisp-wrap {
+    position: absolute;
+    bottom: calc(env(safe-area-inset-bottom, 20px) + 14px);
+    left: 16px; right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transform: translateY(110%);
+    transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.wp-modal-overlay.show .whisp-wrap {
+    transform: translateY(0);
+}
+.whisp-bubble {
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 14px 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.03);
+}
+.whisp-bubble.main {
+    border-radius: 20px 20px 6px 20px;
+}
+.whisp-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.whisp-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--t-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.whisp-avatar i { font-size: 14px; color: var(--t-text-soft); }
+.whisp-meta { flex: 1; }
+.whisp-name { font-size: 11px; font-weight: 800; color: var(--t-text); }
+.whisp-time { font-size: 8px; color: var(--t-mid); margin-top: 1px; }
+.whisp-upload-zone {
+    width: 100%;
+    height: 130px;
+    border-radius: 14px;
+    border: 1.5px dashed var(--t-line);
+    background: var(--t-light);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    overflow: hidden;
+    position: relative;
+}
+.whisp-upload-zone:active { border-color: var(--t-mid); }
+.whisp-upload-zone i { font-size: 18px; color: var(--t-mid); }
+.whisp-upload-zone span {
+    font-size: 8px; font-weight: 700;
+    color: var(--t-mid); letter-spacing: 2px; text-transform: uppercase;
+}
+.whisp-upload-zone.has-img i,
+.whisp-upload-zone.has-img span { display: none; }
+.whisp-btns {
+    display: flex; gap: 8px;
+}
+.whisp-btn {
+    flex: 1; height: 36px;
+    border-radius: 18px;
+    border: none;
+    font-size: 10px; font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: transform 0.15s ease;
+}
+.whisp-btn:active { transform: scale(0.96); }
+.whisp-btn.send {
+    background: var(--t-deep); color: #FFFFFF;
+    border-radius: 18px 18px 18px 6px;
+}
+.whisp-btn.cancel {
+    background: var(--t-light); color: var(--t-text-soft);
+}
+.whisp-quick {
+    display: flex; gap: 6px;
+}
+.whisp-chip {
+    padding: 8px 14px;
+    border-radius: 14px;
+    background: #FFFFFF;
+    font-size: 10px; font-weight: 700;
+    color: var(--t-text-soft);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.03);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+.whisp-chip:active { transform: scale(0.96); }
+
+/* ========== ③ RIBBON 图标信封弹窗 ========== */
+.ribbon-env {
+    position: absolute;
+    bottom: calc(env(safe-area-inset-bottom, 20px) + 16px);
+    left: 16px; right: 16px;
+    max-width: 430px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.03);
+    overflow: hidden;
+    transform: translateY(110%);
+    transition: transform 0.55s cubic-bezier(0.22,1,0.36,1);
+}
+.wp-modal-overlay.show .ribbon-env {
+    transform: translateY(0);
+}
+.ribbon-top {
+    background: var(--t-light);
+    padding: 16px 18px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.ribbon-top-title {
+    font-size: 13px; font-weight: 900;
+    letter-spacing: 0.5px;
+    color: var(--t-text);
+}
+.ribbon-close {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid var(--t-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.ribbon-close:active { background: var(--t-line); }
+.ribbon-body {
+    padding: 6px 18px 14px;
+    max-height: 55vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.ribbon-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--t-line);
+}
+.ribbon-item:last-child { border-bottom: none; }
+.ribbon-item-icon {
+    width: 36px; height: 36px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.ribbon-item-icon img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+}
+.ribbon-item-icon i { font-size: 14px; }
+.ribbon-item-icon.ri-app { box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+.ribbon-item-text { flex: 1; }
+.ribbon-item-name { font-size: 12px; font-weight: 700; color: var(--t-text); }
+.ribbon-item-hint { font-size: 9px; color: var(--t-text-soft); margin-top: 1px; letter-spacing: 0.3px; }
+.ribbon-item-btns {
+    display: flex; gap: 6px; flex-shrink: 0;
+}
+.ribbon-item-btn {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    border: 1px solid var(--t-line);
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.ribbon-item-btn:active { background: var(--t-light); }
+.ribbon-item-btn.reset-btn {
+    background: var(--t-light);
+    border-color: transparent;
+}

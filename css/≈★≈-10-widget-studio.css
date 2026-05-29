@@ -1,0 +1,665 @@
+/* ============ WhisperPhone Widget Studio Style ============ */
+.ws-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #F7F7F7;
+    z-index: 800;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ws-overlay.active {
+    transform: translateX(0);
+}
+
+.ws-header {
+    height: 56px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-bottom: 0.5px solid rgba(0,0,0,0.06);
+    flex-shrink: 0;
+}
+
+.ws-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ws-back {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.ws-back svg {
+    width: 18px;
+    height: 18px;
+    stroke: #1A1A1A;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.ws-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+.ws-import-btn {
+    background: #3D3D40;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ===== 主容器 ===== */
+.ws-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ===== 桌面预览区 ===== */
+.ws-workspace {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 360px;
+}
+
+.ws-workspace.collapsed {
+    max-height: 0;
+}
+
+.ws-workspace-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 8px;
+    flex-shrink: 0;
+}
+
+.ws-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.ws-collapse-btn {
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ws-collapse-btn svg {
+    width: 12px;
+    height: 12px;
+    stroke: #999;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.3s;
+}
+
+.ws-workspace.collapsed .ws-collapse-btn svg {
+    transform: rotate(180deg);
+}
+
+.ws-canvas {
+    width: calc(3* 95px + 54px + 32px);
+    margin: 0 auto;
+    margin-bottom: 12px;
+    height: calc(6 * 101px + 20px);
+    max-height: 300px;
+    background: #1A1A1A;
+    border-radius: 20px;
+    padding: 10px 16px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ws-canvas::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to bottom, transparent 0%, rgba(26, 26, 26, 0.6) 60%, #1A1A1A 100%);
+    pointer-events: none;
+    z-index: 3;
+    border-radius: 0 0 20px 20px;
+}
+
+.ws-grid {
+    width: calc(3 * 95px + 54px);
+    height: calc(6 * 101px);
+    position: relative;
+    margin: 0 auto;
+}
+
+.ws-grid-slot {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    border: 1.5px dashed rgba(255, 255, 255, 0.13);
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: opacity 0.2s;
+}
+
+.ws-workspace-fade {
+    height: 12px;
+    background: linear-gradient(to bottom, #fff, #F7F7F7);
+    flex-shrink: 0;
+}
+
+.ws-expand-bar {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: #fff;
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+}
+
+.ws-workspace.collapsed ~ .ws-expand-bar {
+    display: flex;
+}
+
+.ws-expand-bar span {
+    font-size: 11px;
+    font-weight: 600;
+    color: #999;
+}
+
+/* ===== 组件库 ===== */
+.ws-gallery {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #F7F7F7;
+}
+
+.ws-gallery::-webkit-scrollbar { display: none; }
+
+.ws-card {
+    background: #fff;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ws-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ws-card-info h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+.ws-card-info p {
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 1px;
+}
+
+.ws-add-btn {
+    background: #F2F2F2;
+    color: #555;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ===== 组件渲染容器 ===== */
+.ws-render {
+    background: #fff;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    border-radius: 16px;
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ws-gallery .ws-render {
+    height: 110px;
+}
+
+/* ===== 唱片样式 ===== */
+.ws-vinyl {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    gap: 14px;
+    background: #1A1A1A;
+    color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+.ws-vinyl-disc {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(#222, #444, #222, #333, #222);
+    position: relative;
+    flex-shrink: 0;animation: ws-spin 8s linear infinite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.ws-vinyl-disc::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1A1A1A;
+    border: 2px solid #555;
+}
+
+.ws-vinyl-disc::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.ws-vinyl-info {
+    flex: 1;min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.ws-vinyl-title {
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ws-vinyl-sub {
+    font-size: 9px;
+    color: #777;
+}
+
+.ws-vinyl-bar {
+    height: 2px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 1px;
+    margin-top: 8px;
+}
+
+.ws-vinyl-bar-fill {
+    height: 100%;
+    width: 38%;
+    background: #fff;
+    border-radius: 1px;
+}
+
+/* ===== 胶囊样式 ===== */
+.ws-capsule {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 12px;
+    background: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+.ws-capsule-pill {
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 50px;
+    background: #F2F2F2;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.ws-capsule-pill i {
+    font-size: 12px;
+    color: #555;
+}
+
+.ws-capsule-pill-text {
+    font-size: 11px;
+    font-weight: 700;
+    color: #333;
+}
+
+.ws-capsule-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ws-capsule-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1A1A1A;white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ws-capsule-sub {
+    font-size: 9px;
+    color: #bbb;
+}
+
+/* ===== 唱片+胶囊混合 ===== */
+.ws-vinyl-capsule {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
+    background: linear-gradient(135deg, #1A1A1A, #2C2C2E);
+    color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+.ws-vc-disc {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: conic-gradient(#333, #555, #333, #444, #333);
+    position: relative;
+    flex-shrink: 0;
+    animation: ws-spin 10s linear infinite;
+}
+
+.ws-vc-disc::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1A1A1A;
+    border: 1.5px solid #666;
+}
+
+.ws-vc-capsules {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ws-vc-pill {
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ws-vc-pill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #888;
+}
+
+.ws-vc-pill-text {
+    font-size: 9px;
+    font-weight: 600;
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===== 桌面内组件 ===== */
+.ws-desktop-widget {
+    position: relative;
+    z-index: 2;
+    border-radius: 12px;
+    overflow: visible;
+}
+
+.ws-desktop-widget > .ws-vinyl,
+.ws-desktop-widget > .ws-capsule,
+.ws-desktop-widget > .ws-vinyl-capsule {
+    border-radius: 12px;overflow: hidden;
+}
+
+.ws-desktop-widget .ws-del-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1A1A1A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+}
+
+/*拖动删除区*/
+.ws-delete-zone {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    padding: 10px 24px;
+    border-radius: 50px;
+    background: rgba(200, 60, 60, 0.85);
+    color: #fff;
+    font-size: 12px;
+    font-weight:700;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 20;
+}
+
+.ws-delete-zone.show {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+    pointer-events: auto;
+}
+
+.ws-delete-zone.hover {
+    background: rgba(220, 40, 40, 1);
+    transform: translateX(-50%) scale(1.1);
+}
+
+/* ===== 导入弹窗 ===== */
+.ws-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.9s cubic-bezier(0.4, 0, 0.2, 1), backdrop-filter 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ws-modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.ws-modal {
+    background: #fff;
+    width: calc(100% - 40px);
+    max-width: 360px;
+    border-radius: 24px;
+    padding: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 80vh;
+    overflow-y: auto;
+    opacity: 0;
+    transform: scale(0.92) translateY(14px);
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ws-modal-overlay.show .ws-modal {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.ws-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ws-modal-header h2 {
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.ws-modal-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #999;
+    cursor: pointer;
+}
+
+.ws-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ws-input-group label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #999;
+}
+
+.ws-input-field {
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #E5E5E5;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 12px;
+    outline: none;
+}
+
+.ws-input-field:focus {
+    border-color: #3D3D40;
+}
+
+textarea.ws-input-field {
+    min-height: 80px;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+.ws-row-group {
+    display: flex;
+    gap: 10px;
+}
+
+.ws-row-group .ws-input-group {
+    flex: 1;
+}
+
+.ws-submit-btn {
+    background: #3D3D40;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+@keyframes ws-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

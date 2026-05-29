@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="wp-sysfont">
+<head>
+    <meta charset="UTF-8">
+    <title>WhisperPhone · Home</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#FFFFFF">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/Gh4HPCbh/1779914948843.png">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Gh4HPCbh/1779914948843.png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="css/≈★≈-00-variables.css">
+    <link rel="stylesheet" href="css/≈★≈-01-frame.css">
+    <link rel="stylesheet" href="css/≈★≈-02-home.css">
+    <link rel="stylesheet" href="css/≈★≈-03-Settings.css">
+    <link rel="stylesheet" href="css/≈★≈-04-backup.css">
+    <link rel="stylesheet" href="css/≈★≈-05-api.css">
+    <link rel="stylesheet" href="css/≈★≈-06-chat.css">
+    <link rel="stylesheet" href="css/≈★≈-07-chat-detail.css">
+    <link rel="stylesheet" href="css/≈★≈-08-chat-settings.css">
+    <link rel="stylesheet" href="css/≈★≈-10-widget-studio.css">
+    <style>
+    /* 全局系统字体 */
+    html.wp-sysfont,
+    html.wp-sysfont body,
+    html.wp-sysfont *:not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab):not(i){
+        font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    }
+    /* 系统字体预设管理 */
+    .soul-font-fold{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1);}
+    .soul-font-fold.open{max-height:600px;}
+    .sf-add{padding:10px 14px 4px;display:flex;flex-direction:column;gap:8px;}
+    .sf-input{width:100%;height:34px;border-radius:10px;border:1px solid rgba(0,0,0,0.08);background:#fff;padding:0 12px;font-size:12px;color:#333;outline:none;box-sizing:border-box;}
+    .sf-url-row{display:flex;gap:8px;}
+    .sf-url-row .sf-input{flex:1;}
+    .sf-btn{height:34px;border:none;border-radius:10px;background:#3D3D40;color:#fff;font-size:12px;font-weight:600;padding:0 16px;cursor:pointer;}
+    .sf-btn.full{width:100%;}
+    .sf-presets{padding:6px 14px 12px;display:flex;flex-direction:column;gap:6px;}
+    .sf-empty{font-size:11px;color:#bbb;text-align:center;padding:10px 0;}
+    .sf-preset{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:rgba(0,0,0,0.025);}
+    .sf-preset-info{flex:1;min-width:0;}
+    .sf-preset-name{font-size:12px;font-weight:600;color:#444;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .sf-preset-type{font-size:9px;color:#bbb;margin-top:1px;}
+    .sf-use{font-size:11px;font-weight:600;color:#666;background:#eee;border-radius:8px;padding:5px 10px;cursor:pointer;flex-shrink:0;}
+    .sf-use.active{background:#3D3D40;color:#fff;}
+    .sf-del{font-size:11px;font-weight:600;color:#c9a0a0;background:#f5f0f0;border-radius:8px;padding:5px 10px;cursor:pointer;flex-shrink:0;}
+    /* 字号滑块 */
+    .soul-fs-row{display:flex;align-items:center;gap:12px;padding:14px 16px 16px;}
+    .soul-fs-mini{font-size:11px;color:#bbb;flex-shrink:0;font-weight:700;}
+    .soul-fs-max{font-size:17px;color:#bbb;flex-shrink:0;font-weight:700;}
+    .soul-fs-slider{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(0,0,0,0.1);outline:none;}
+    .soul-fs-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#3D3D40;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+    .soul-fs-slider::-moz-range-thumb{width:14px;height:14px;border:none;border-radius:50%;background:#3D3D40;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.2);}
+    .soul-fs-val{font-size:11px;color:#999;font-weight:600;flex-shrink:0;width:38px;text-align:right;}
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <div class="edit-hint">长按拖动 · 点击空白处完成</div>
+
+        <div class="page-wrapper" id="slider">
+            <div class="page" data-page="0">
+                <div class="grid-area" id="grid-0"></div>
+            </div>
+            <div class="page" data-page="1">
+                <div class="grid-area" id="grid-1"></div>
+            </div>
+        </div>
+
+        <div class="page-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div></div>
+
+        <div class="dock">
+            <div class="app-icon icon-white"><i class="fa-solid fa-heart-pulse"></i></div>
+            <div class="app-icon icon-gray"><i class="fa-solid fa-compass"></i></div>
+            <div class="app-icon icon-black"><i class="fa-solid fa-paper-plane"></i></div>
+            <div class="app-icon icon-white"><i class="fa-solid fa-bell"></i></div>
+        </div>
+
+    </div>
+
+    <script src="js/≈★≈-00-utils.js"></script>
+    <script src="js/≈★≈-02-db.js"></script>
+    <script src="js/≈★≈-01-home.js"></script>
+    <script src="js/≈★≈-03-Settings.js"></script>
+    <script src="js/≈★≈-04-backup.js"></script>
+    <script src="js/≈★≈-05-api.js"></script>
+    <script src="js/≈★≈-06-chat.js"></script>
+    <script src="js/≈★≈-07-chat-detail.js"></script>
+    <script src="js/≈★≈-08-chat-settings.js"></script>
+    <script src="js/≈★≈-09-worldbook.js"></script>
+    <script src="js/≈★≈-10-widget-studio.js"></script>
+
+    <script>
+        if('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js').then(function() {
+                    console.log('[SW] registered');
+                }).catch(function(err) {
+                    console.log('[SW] register failed:', err);
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
