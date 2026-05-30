@@ -862,8 +862,7 @@
 }
 /* ── 回溯按钮 ── */
 .ca-rewind-btn{
-  position:absolute;
-  top:50%;
+  position:fixed;
   transform:translateY(-50%) scale(0.7);
   opacity:0;
   width:26px;height:26px;
@@ -873,14 +872,8 @@
   box-shadow:0 2px 8px rgba(0,0,0,0.06);
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;
-  z-index:10;
+  z-index:802;
   transition:all 0.2s cubic-bezier(0.16,1,0.3,1);
-}
-.ca-msg-row.user .ca-rewind-btn{
-  left:-36px;right:auto;
-}
-.ca-msg-row.other .ca-rewind-btn{
-  right:-36px;left:auto;
 }
 .ca-rewind-btn.show{
   opacity:1;

@@ -383,57 +383,90 @@ function hideCtxMenu(){
 function showRewindBtn(bubble){
     var row = bubble.closest('.ca-msg-row');
     if(!row) return;
+    var isUser = row.classList.contains('user');
+    var bRect = bubble.getBoundingClientRect();
     var btn = document.createElement('div');
     btn.className = 'ca-rewind-btn';
     btn.id = 'cdRewindBtn';
     btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>';
     btn.addEventListener('click', function(e){
         e.stopPropagation();
+        var targetRow = row;
         hideCtxMenu();
-        doRewind(row);
+        doRewind(targetRow);
     });
-    row.appendChild(btn);
+    var top = bRect.top + bRect.height / 2;
+    if(isUser){
+        btn.style.left = (bRect.left -34) + 'px';
+    } else {
+        btn.style.left = (bRect.right + 8) + 'px';
+    }
+    btn.style.top = top + 'px';
+    document.body.appendChild(btn);
     requestAnimationFrame(function(){ btn.classList.add('show'); });
 }
 
 function removeRewindBtn(){
-    var btn = detailEl ? detailEl.querySelector('#cdRewindBtn') : null;
+    var btn = document.getElementById('cdRewindBtn');
     if(btn) btn.parentNode.removeChild(btn);
 }
 
 function doRewind(row){
     if(!currentId) return;
     var msgId = row.dataset.msgId;
+    var bubbleId = row.dataset.bubbleId || '';
+    
+    /* 从 localStorage 强制读最新数据 */
+    try{
+        window._wpChatConvs = JSON.parse(localStorage.getItem('wp_chat_messages')||'{}');
+    }catch(e){}
+    
     var convs = window._wpChatConvs || {};
     var msgs = convs[currentId] || [];
-    var msgIdx = msgId ? msgs.findIndex(function(m){ return m.id === msgId; }) : -1;
+
+    /* 找到该气泡所属的主消息索引 */
+    var msgIdx = -1;
+    for(var i = 0; i < msgs.length; i++){
+        if(msgs[i].id === msgId){ msgIdx = i; break; }
+    }
     if(msgIdx < 0) return;
 
-    convs[currentId] = msgs.slice(0, msgIdx + 1);
-    window._wpChatConvs = convs;
-    try{ localStorage.setItem('wp_chat_messages', JSON.stringify(convs)); }catch(e){}
+    /* 保留到这条消息（含），删掉后面所有 */
+    var newMsgs = msgs.slice(0, msgIdx + 1);
 
-    var msgsEl = detailEl.querySelector('#cdMsgs');
-    var allRows = Array.prototype.slice.call(msgsEl.querySelectorAll('.ca-msg-row'));
-    var domIdx = allRows.indexOf(row);
-    if(domIdx >= 0){
-        for(var i = allRows.length - 1; i > domIdx; i--){
-            if(allRows[i].parentNode) allRows[i].parentNode.removeChild(allRows[i]);
+    /* 如果是AI消息的拆分气泡，还需要截断句子 */
+    var isUser = row.classList.contains('user');
+    if(!isUser && bubbleId){
+        var idxParts = bubbleId.split('_');
+        var sentenceIdx = parseInt(idxParts[idxParts.length - 1], 10);
+        if(!isNaN(sentenceIdx)){
+            var msg = newMsgs[newMsgs.length - 1];
+            var sentences = splitSentences(msg.text);
+            if(sentenceIdx < sentences.length - 1){
+                msg.text = sentences.slice(0, sentenceIdx + 1).join('');
+            }
         }
     }
-    var narLines = msgsEl.querySelectorAll('.cd-narration-center-line');
-    narLines.forEach(function(nl){
-        if(row.compareDocumentPosition(nl) & Node.DOCUMENT_POSITION_FOLLOWING){
-            nl.parentNode.removeChild(nl);
-        }
-    });
-    var sysLines = msgsEl.querySelectorAll('.ca-msg-sys');
-    sysLines.forEach(function(sl){
-        if(row.compareDocumentPosition(sl) & Node.DOCUMENT_POSITION_FOLLOWING){
-            sl.parentNode.removeChild(sl);
-        }
-    });
-    addSysBubble('已回溯到此处');
+
+    convs[currentId] = newMsgs;
+    window._wpChatConvs = convs;
+    
+    try{
+        localStorage.setItem('wp_chat_messages', JSON.stringify(convs));
+    }catch(e){}
+
+    /* 直接重新渲染 */
+    renderMsgs(currentId);
+    
+    var msgsEl = detailEl.querySelector('#cdMsgs');
+    var notice = document.createElement('div');
+    notice.className = 'ca-msg-sys';
+    notice.textContent = '已回溯到此处';
+    msgsEl.appendChild(notice);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+    setTimeout(function(){
+        if(notice.parentNode) notice.parentNode.removeChild(notice);
+    }, 3000);
 }
 
 function handleCtxAction(act){
@@ -828,11 +861,25 @@ function insertTimeGap(msgsEl){
     );
     var gap = Date.now() - lastDate.getTime();
     var label = getTimeGapLabel(gap);
-    if(!label) return;
-    var tag = document.createElement('div');
-    tag.className = 'ca-msg-time-gap';
-    tag.textContent = label;
-    msgsEl.appendChild(tag);
+    if(!label) {
+        var oldTag = msgsEl.querySelector('.ca-msg-time-gap');
+        if(oldTag) oldTag.parentNode.removeChild(oldTag);
+        return;
+    }
+    var tag = msgsEl.querySelector('.ca-msg-time-gap');
+    if(tag){
+        tag.textContent = label;
+    } else {
+        tag = document.createElement('div');
+        tag.className = 'ca-msg-time-gap';
+        tag.textContent = label;
+        var timeTag = msgsEl.querySelector('.ca-msg-time-tag');
+        if(timeTag){
+            msgsEl.insertBefore(tag, timeTag);
+        } else {
+            msgsEl.insertBefore(tag, msgsEl.firstChild);
+        }
+    }
 }
 
 function sendMsg(){
@@ -958,13 +1005,11 @@ function renderMsgs(contactId, fromStart){
     loadNarrationSettings();
     try{
         var stored = JSON.parse(localStorage.getItem('wp_chat_messages')||'{}');
-        if(!window._wpChatConvs) window._wpChatConvs = stored;
-        else {
-            Object.keys(stored).forEach(function(k){
-                if(!window._wpChatConvs[k]) window._wpChatConvs[k] = stored[k];
-            });
-        }
-    }catch(e){}
+        window._wpChatConvs = stored;
+        console.log('[renderMsgs] loaded from localStorage:', (stored[contactId]||[]).length, 'msgs');
+    }catch(e){
+        console.error('[renderMsgs] error:', e);
+    }
     var convs = window._wpChatConvs || {};
     var msgs = convs[contactId] || [];
     if(msgs.length === 0){
@@ -1048,6 +1093,7 @@ function renderMsgs(contactId, fromStart){
         });
     }
     
+    insertTimeGap(msgsEl);
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
     if(c && c.settings && c.settings.avatar){
@@ -1211,9 +1257,12 @@ function openDetail(id){
     loadNarrationSettings();
     currentId = id;
     initNarrationForContact(id);
-    var c = getContactData(id);
+    /* 强制从localStorage读取，确保回溯状态正确 */
+    try{
+        var fresh = JSON.parse(localStorage.getItem('wp_chat_messages')||'{}');
+        window._wpChatConvs = fresh;
+    }catch(e){}var c = getContactData(id);
     if(!c) return;
-
     /* 重置输入状态，防止上一个聊天的残留阻止发送 */
     var inp = detailEl.querySelector('#cdInput');
     inp.value = '';
@@ -1232,6 +1281,7 @@ function openDetail(id){
     msgsEl.style.fontSize = getFontSize(c);
 
     renderMsgs(id);
+    insertTimeGap(msgsEl);
     detailEl.classList.add('active');
     setTimeout(function(){
         msgsEl.scrollTop = msgsEl.scrollHeight;
