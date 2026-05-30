@@ -1086,7 +1086,6 @@ function renderMsgs(contactId, fromStart){
         });
     }
     
-    insertTimeGap(msgsEl);
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
     if(c && c.settings && c.settings.avatar){
